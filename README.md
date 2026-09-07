@@ -15,6 +15,7 @@ Then open `http://localhost:4173`.
 ## Routes
 
 - `/` — landing page
+- `/en` — English landing page
 - `/auth/callback` — email confirmation bridge to `yobro://auth/callback`
 - `/auth/reset-password` — password recovery bridge to `yobro://auth/reset-password`
 - `/privacy` — privacy summary

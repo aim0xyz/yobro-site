@@ -2,6 +2,10 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
+document.querySelectorAll('[data-language]').forEach((link) => {
+  link.addEventListener('click', () => localStorage.setItem('yobro-language', link.dataset.language));
+});
+
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {

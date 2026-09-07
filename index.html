@@ -9,7 +9,11 @@
   <meta property="og:description" content="Weniger Browser-Chaos. Mehr Raum für das, was du vorhast.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://yobro.aimoxyz.xyz">
+  <link rel="alternate" hreflang="de" href="https://yobro.aimoxyz.xyz/">
+  <link rel="alternate" hreflang="en" href="https://yobro.aimoxyz.xyz/en/">
+  <link rel="alternate" hreflang="x-default" href="https://yobro.aimoxyz.xyz/">
   <link rel="icon" href="/assets/favicon.png">
+  <script src="/language.js"></script>
   <link rel="stylesheet" href="/styles.css">
   <title>YOBRO — Dein Browser. Auf deiner Seite.</title>
 </head>
@@ -27,7 +31,7 @@
       <a href="#agent">Agenten</a>
       <a href="#privacy">Privatsphäre</a>
     </nav>
-    <a class="nav-pill" href="#inside">Für macOS <span>↗</span></a>
+    <div class="nav-actions"><a class="language-link" data-language="en" href="/en/">EN</a><a class="nav-pill" href="#inside">Für macOS <span>↗</span></a></div>
   </header>
 
   <main id="top">
@@ -156,7 +160,7 @@
   <footer class="footer shell">
     <a class="brand" href="#top"><span class="brand-mark"><img src="/assets/yobro-mark.png" alt=""></span><span>YOBRO</span></a>
     <p>Made with curiosity by <a href="https://aimoxyz.xyz">aimoxyz</a>.</p>
-    <div><a href="/privacy/">Datenschutz</a><span>© <span id="year"></span></span></div>
+    <div><a class="language-link" data-language="en" href="/en/">English</a><a href="/privacy/">Datenschutz</a><span>© <span id="year"></span></span></div>
   </footer>
 
   <script src="/script.js"></script>
