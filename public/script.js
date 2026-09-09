@@ -5,7 +5,6 @@ const finePointer = window.matchMedia("(pointer: fine)").matches;
 const root = document.documentElement;
 const story = document.querySelector("[data-scroll-story]");
 const scrollVideo = document.querySelector("[data-scroll-video]");
-const browserShell = document.querySelector(".browser-shell");
 const indexItems = [...document.querySelectorAll(".story-index span")];
 const sideItems = [...document.querySelectorAll(".side-item")];
 const kinetic = document.querySelector("[data-kinetic]");
@@ -91,13 +90,6 @@ function measureScroll() {
     );
   }
   nav?.classList.toggle("is-condensed", window.scrollY > window.innerHeight * 0.65);
-  if (browserShell) {
-    const browserRect = browserShell.getBoundingClientRect();
-    nav?.classList.toggle(
-      "is-story-hidden",
-      targetProgress > 0.28 && browserRect.bottom > 24 && browserRect.top < window.innerHeight - 24,
-    );
-  }
   motionSections.forEach((section) => {
     const sectionRect = section.getBoundingClientRect();
     const travel = section.offsetHeight + window.innerHeight;

@@ -109,7 +109,7 @@ button {
   z-index: 30;
   color: var(--ink);
   border-bottom: 1px solid rgba(17, 23, 19, 0.14);
-  transition: width 0.55s var(--ease), top 0.55s var(--ease), height 0.55s var(--ease), padding 0.55s var(--ease), color 0.35s, background 0.35s, border-color 0.35s, border-radius 0.55s var(--ease), backdrop-filter 0.35s, opacity 0.35s var(--ease), transform 0.55s var(--ease);
+  transition: width 0.55s var(--ease), top 0.55s var(--ease), height 0.55s var(--ease), padding 0.55s var(--ease), color 0.35s, background 0.35s, border-color 0.35s, border-radius 0.55s var(--ease), backdrop-filter 0.35s;
 }
 .nav.is-condensed {
   position: fixed;
@@ -128,11 +128,6 @@ button {
 .nav.is-condensed nav { gap: 34px; color: rgba(17, 23, 19, 0.58); }
 .nav.is-condensed .language-link { color: rgba(17, 23, 19, 0.55); }
 .nav.is-condensed .nav-pill { border-color: rgba(17, 23, 19, 0.18); }
-.nav.is-story-hidden {
-  opacity: 0;
-  transform: translate(-50%, -140%);
-  pointer-events: none;
-}
 .brand {
   display: inline-flex;
   align-items: center;
