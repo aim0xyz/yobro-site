@@ -204,16 +204,14 @@ button {
   left: 0;
   right: 0;
   bottom: 0;
-  height: min(42vh, 420px);
+  height: min(58vh, 580px);
   pointer-events: none;
-  transform: translateY(calc((1 - var(--story-fade-progress, 0)) * 130%));
-  will-change: transform;
   background: linear-gradient(
     to bottom,
     rgba(19, 36, 27, 0) 0%,
-    rgba(19, 36, 27, 0.12) 20%,
-    rgba(19, 36, 27, 0.72) 58%,
-    var(--section-green) 78%,
+    rgba(19, 36, 27, 0.16) 14%,
+    rgba(19, 36, 27, 0.76) 34%,
+    var(--section-green) 52%,
     var(--section-green) 100%
   );
 }
@@ -1074,6 +1072,8 @@ button {
   margin-top: -28vh;
   min-height: 110vh;
   background: var(--section-green);
+  box-shadow: 0 0 0 100vmax var(--section-green);
+  clip-path: inset(0 -100vmax);
   padding-block: 190px 170px;
   display: flex;
   flex-direction: column;

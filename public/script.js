@@ -78,7 +78,6 @@ function measureScroll() {
     const rect = story.getBoundingClientRect();
     const distance = Math.max(1, story.offsetHeight - window.innerHeight);
     targetProgress = clamp(-rect.top / distance);
-    root.style.setProperty("--story-fade-progress", targetProgress.toFixed(4));
   }
   const pageDistance = Math.max(
     1,
