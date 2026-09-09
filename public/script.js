@@ -89,10 +89,10 @@ function measureScroll() {
   );
   if (kinetic) {
     const kineticRect = kinetic.getBoundingClientRect();
-    const kineticDistance = Math.max(1, kinetic.offsetHeight - window.innerHeight);
+    const kineticDistance = Math.max(1, kinetic.offsetHeight + window.innerHeight);
     kinetic.style.setProperty(
       "--kinetic-progress",
-      clamp(-kineticRect.top / kineticDistance).toFixed(4),
+      clamp((window.innerHeight - kineticRect.top) / kineticDistance).toFixed(4),
     );
   }
   nav?.classList.toggle("is-condensed", window.scrollY > window.innerHeight * 0.65);

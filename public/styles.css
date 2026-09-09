@@ -191,6 +191,23 @@ button {
   height: 540vh;
   position: relative;
 }
+.scroll-story:after {
+  content: "";
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: min(42vh, 420px);
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(17, 23, 19, 0) 0%,
+    rgba(17, 23, 19, 0.12) 24%,
+    rgba(17, 23, 19, 0.7) 72%,
+    var(--ink) 100%
+  );
+}
 .story-sticky {
   height: 100vh;
   position: sticky;
@@ -1102,15 +1119,15 @@ button {
 .manifesto-copy { transform: translateY(calc((.5 - var(--local-progress)) * 90px)); }
 .kinetic {
   --kinetic-progress: 0;
-  height: 260vh;
+  height: clamp(760px, 135vh, 1280px);
   position: relative;
   background: var(--paper);
   color: var(--ink);
+  overflow: hidden;
 }
 .kinetic-sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
+  position: relative;
+  height: 100%;
   overflow: hidden;
   display: grid;
   place-items: center;
@@ -1541,7 +1558,7 @@ button {
   .manifesto h2 {
     font-size: 55px;
   }
-  .kinetic { height: 220vh; }
+  .kinetic { height: 110vh; min-height: 720px; }
   .kinetic-core { width: calc(100% - 30px); min-height: 390px; padding: 30px; }
   .kinetic-lines { transform: rotate(-7deg) scale(1.2); }
   .kinetic-lines p { font-size: clamp(62px, 20vw, 120px); }
