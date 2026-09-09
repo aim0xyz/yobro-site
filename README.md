@@ -1,6 +1,6 @@
 # YOBRO Site
 
-Motion landing page and secure web-to-app authentication bridge for [YOBRO](https://yobro.aimoxyz.xyz).
+Motion landing page and secure web-to-app authentication bridge for [YOBRO](https://yobro.lol).
 
 ## Local preview
 

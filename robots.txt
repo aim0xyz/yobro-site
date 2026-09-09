@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /auth/
 
-Sitemap: https://yobro.aimoxyz.xyz/sitemap.xml
+Sitemap: https://yobro.lol/sitemap.xml
