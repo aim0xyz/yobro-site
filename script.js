@@ -10,6 +10,7 @@ const indexItems = [...document.querySelectorAll(".story-index span")];
 const sideItems = [...document.querySelectorAll(".side-item")];
 const kinetic = document.querySelector("[data-kinetic]");
 const nav = document.querySelector(".nav");
+const motionSections = [...document.querySelectorAll("[data-motion-section]")];
 
 const addresses = [
   "yobro://home",
@@ -95,6 +96,12 @@ function measureScroll() {
     );
   }
   nav?.classList.toggle("is-condensed", window.scrollY > window.innerHeight * 0.65);
+  motionSections.forEach((section) => {
+    const sectionRect = section.getBoundingClientRect();
+    const travel = section.offsetHeight + window.innerHeight;
+    const localProgress = clamp((window.innerHeight - sectionRect.top) / travel);
+    section.style.setProperty("--local-progress", localProgress.toFixed(4));
+  });
   if (!rafPending) {
     rafPending = true;
     requestAnimationFrame(renderScroll);

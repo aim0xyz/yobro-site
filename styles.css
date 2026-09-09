@@ -655,7 +655,10 @@ button {
   padding: 0 11px 0 18px;
   font-size: 10px;
   color: #829087;
+  position: relative;
+  overflow: hidden;
 }
+.command-box:after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 25%, rgba(171,197,167,.22), transparent 70%); transform: translateX(-100%); animation: command-scan 3.4s var(--ease) infinite; }
 .command-box b {
   color: #56635a;
   font-weight: 500;
@@ -753,19 +756,19 @@ button {
   background: var(--sage);
   left: 0;
   top: 3%;
-  transform: rotate(-9deg);
+  transform: rotate(-9deg) translateY(calc((1 - var(--browser-progress)) * 34px));
 }
 .deck-two {
   background: var(--lilac);
   right: 2%;
   top: 17%;
-  transform: rotate(7deg);
+  transform: rotate(7deg) translateY(calc((1 - var(--browser-progress)) * -24px));
 }
 .deck-three {
   background: var(--peach);
   left: 18%;
   bottom: 0;
-  transform: rotate(-2deg);
+  transform: rotate(-2deg) translateX(calc((1 - var(--browser-progress)) * 28px));
 }
 .panel-agent {
   background: #17221b;
@@ -885,7 +888,10 @@ button {
   align-items: center;
   font-size: 8px;
   box-shadow: 0 16px 35px rgba(0, 0, 0, 0.22);
+  animation: flow-step 3.6s var(--ease) infinite;
 }
+.task-two { animation-delay: 1.2s; }
+.task-three { animation-delay: 2.4s; }
 .task-chip i {
   font-style: normal;
   color: var(--orange);
@@ -1039,7 +1045,12 @@ button {
 .ticker {
   overflow: hidden;
   border-block: 1px solid var(--line);
-  padding: 18px 0;
+  padding: 22px 0;
+  background: var(--orange);
+  color: var(--ink);
+  transform: rotate(-1deg) scale(1.02);
+  position: relative;
+  z-index: 3;
 }
 .ticker > div {
   display: flex;
@@ -1049,14 +1060,43 @@ button {
   animation: ticker 25s linear infinite;
   font-size: 10px;
   letter-spacing: 0.2em;
-  color: rgba(243, 240, 231, 0.45);
+  color: rgba(17, 23, 19, 0.82);
+  font-weight: 800;
 }
 .ticker i {
   font-style: normal;
-  color: var(--orange);
+  color: var(--paper);
 }
 .manifesto {
-  padding-block: 170px 190px;
+  --local-progress: 0;
+  min-height: 110vh;
+  padding-block: 190px 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  isolation: isolate;
+}
+.manifesto:before {
+  content: "01";
+  position: absolute;
+  right: -0.02em;
+  top: 50%;
+  z-index: -1;
+  transform: translateY(-50%) translateX(calc((1 - var(--local-progress)) * 12vw));
+  font: italic 400 min(52vw, 760px)/.8 "Iowan Old Style", Baskerville, Georgia, serif;
+  letter-spacing: -.1em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(171,197,167,.13);
+}
+.manifesto:after {
+  content: "RETHINK THE FRAME";
+  position: absolute;
+  right: 0;
+  top: 110px;
+  font-size: 8px;
+  letter-spacing: .24em;
+  color: var(--orange);
 }
 .section-kicker {
   margin: 0 0 60px;
@@ -1071,6 +1111,7 @@ button {
   font-size: clamp(58px, 8vw, 122px);
   line-height: 0.84;
   margin: 0;
+  transform: translateX(calc((.45 - var(--local-progress)) * -12vw));
 }
 .manifesto-copy p {
   font-family: Georgia, serif;
@@ -1083,6 +1124,7 @@ button {
   line-height: 1.7;
   color: rgba(243, 240, 231, 0.55);
 }
+.manifesto-copy { transform: translateY(calc((.5 - var(--local-progress)) * 90px)); }
 .kinetic {
   --kinetic-progress: 0;
   height: 260vh;
@@ -1097,6 +1139,15 @@ button {
   overflow: hidden;
   display: grid;
   place-items: center;
+}
+.kinetic-sticky:after {
+  content: "SCROLL / OPEN THE FRAME";
+  position: absolute;
+  left: 32px;
+  bottom: 28px;
+  color: rgba(17,23,19,.45);
+  font-size: 8px;
+  letter-spacing: .22em;
 }
 .kinetic-sticky:before {
   content: "";
@@ -1146,6 +1197,7 @@ button {
   clip-path: inset(calc((1 - var(--kinetic-progress)) * 42%) 0 round 4px);
   transform: perspective(1200px) rotateX(calc(12deg - var(--kinetic-progress) * 12deg)) scale(calc(.9 + var(--kinetic-progress) * .1));
 }
+.kinetic-core p { transform: translateY(calc((.5 - var(--kinetic-progress)) * 80px)); opacity: clamp(.2, calc(var(--kinetic-progress) * 1.8), 1); }
 .kinetic-core:before, .kinetic-core:after { content: ""; position: absolute; top: 0; bottom: 0; width: 2px; background: var(--orange); transform: scaleY(var(--kinetic-progress)); }
 .kinetic-core:before { left: 0; transform-origin: top; }
 .kinetic-core:after { right: 0; transform-origin: bottom; }
@@ -1154,8 +1206,12 @@ button {
 .kinetic-core small { margin-top: 28px; font-size: 8px; letter-spacing: .22em; color: rgba(243,240,231,.38); }
 .kinetic-ring { display: none; }
 .principles {
+  --local-progress: 0;
   border-top: 1px solid var(--line);
+  padding-top: 90px;
+  position: relative;
 }
+.principles:before { content: "THREE RULES / ZERO NOISE"; position: absolute; top: 30px; left: 0; font-size: 8px; letter-spacing: .22em; color: var(--sage); }
 .principle {
   min-height: 280px;
   display: grid;
@@ -1167,14 +1223,21 @@ button {
     background 0.45s;
   position: relative;
   overflow: hidden;
+  padding-inline: clamp(0px, calc((var(--local-progress) - .25) * 70px), 36px);
 }
 .principle:before { content: ""; position: absolute; width: 360px; height: 360px; left: var(--mx, 50%); top: var(--my, 50%); transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(171,197,167,.1), transparent 68%); opacity: 0; transition: opacity .35s; pointer-events: none; }
 .principle:hover:before { opacity: 1; }
 .principle > * { position: relative; z-index: 1; }
 .principle:hover {
-  padding-inline: 30px;
-  background: rgba(255, 255, 255, 0.025);
+  padding-inline: 42px;
+  color: var(--ink);
 }
+.principle:nth-child(1):hover { background: var(--sage); }
+.principle:nth-child(2):hover { background: var(--orange); }
+.principle:nth-child(3):hover { background: var(--lilac); }
+.principle:hover small, .principle:hover > span, .principle:hover > i { color: var(--ink); }
+.principle h3 { transition: transform .55s var(--ease), letter-spacing .55s var(--ease); }
+.principle:hover h3 { transform: translateX(24px); letter-spacing: -.06em; }
 .principle > span,
 .principle small {
   font-size: 8px;
@@ -1195,12 +1258,33 @@ button {
   color: var(--orange);
 }
 .closing {
+  --local-progress: 0;
   min-height: 950px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.closing:before, .closing:after { content: ""; position: absolute; height: 1px; width: calc(var(--local-progress) * 80%); background: rgba(171,197,167,.22); left: 10%; }
+.closing:before { top: 16%; }
+.closing:after { bottom: 16%; }
+.closing-word {
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 50%;
+  transform: translate(calc(-50% + (var(--local-progress) - .5) * -20vw), -50%);
+  font-size: clamp(180px, 34vw, 540px);
+  line-height: .7;
+  font-weight: 900;
+  letter-spacing: -.1em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(243,240,231,.055);
+  white-space: nowrap;
 }
 .closing-orbit {
   width: 155px;
@@ -1237,6 +1321,7 @@ button {
   font-size: clamp(78px, 11vw, 160px);
   line-height: 0.78;
   margin: 34px 0 58px;
+  text-shadow: 0 30px 70px rgba(0,0,0,.22);
 }
 .primary-button {
   border: 0;
@@ -1246,7 +1331,11 @@ button {
   font-size: 13px;
   font-weight: 700;
   gap: 42px;
+  position: relative;
+  overflow: hidden;
 }
+.primary-button:before { content: ""; position: absolute; inset: 0; background: white; transform: translateX(-110%) skewX(-20deg); transition: transform .55s var(--ease); opacity: .18; }
+.primary-button:hover:before { transform: translateX(110%) skewX(-20deg); }
 .primary-button:hover {
   background: #ff7147;
 }
@@ -1309,6 +1398,8 @@ button {
 }
 @keyframes flow-line { 0% { transform: scaleY(0); opacity: 0; } 35%, 70% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
 @keyframes float-mark { to { transform: translateY(-14px); } }
+@keyframes command-scan { 0%, 45% { transform: translateX(-110%); } 78%, 100% { transform: translateX(110%); } }
+@keyframes flow-step { 0%, 18%, 100% { border-color: rgba(255,90,36,.25); transform: translateX(0); } 8% { border-color: var(--orange); transform: translateX(7px); box-shadow: 0 16px 38px rgba(255,90,36,.12); } }
 @media (max-width: 1050px) {
   .browser-shell {
     width: calc(100vw - 48px);
