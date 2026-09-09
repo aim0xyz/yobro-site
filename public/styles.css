@@ -5,7 +5,7 @@
   --paper-2: #e6eadf;
   --sage: #abc5a7;
   --sage-deep: #6e8f73;
-  --orange: #ff5a24;
+  --orange: #fb531c;
   --lilac: #d4c3e7;
   --peach: #efc2a2;
   --line: rgba(243, 240, 231, 0.15);
@@ -70,7 +70,7 @@ button {
 .ambient-b {
   width: 40vw;
   height: 40vw;
-  background: #ff5a24;
+  background: var(--orange);
   bottom: -25vw;
   left: -20vw;
   opacity: 0.08;
