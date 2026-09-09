@@ -190,6 +190,7 @@ button {
 .scroll-story {
   height: 540vh;
   position: relative;
+  z-index: 2;
 }
 .story-sticky:before {
   content: "";
@@ -1065,7 +1066,7 @@ button {
 }
 .manifesto {
   --local-progress: 0;
-  margin-top: -2px;
+  margin-top: -28vh;
   min-height: 110vh;
   background: var(--ink);
   padding-block: 190px 170px;
@@ -1073,6 +1074,7 @@ button {
   flex-direction: column;
   justify-content: center;
   position: relative;
+  z-index: 1;
   isolation: isolate;
 }
 .manifesto:before {
@@ -1559,6 +1561,7 @@ button {
     justify-content: space-between;
   }
   .manifesto {
+    margin-top: -18vh;
     padding-block: 110px;
   }
   .manifesto h2 {
