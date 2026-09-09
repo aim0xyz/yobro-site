@@ -1042,31 +1042,6 @@ button {
   color: var(--orange);
   transform: translateX(5px);
 }
-.ticker {
-  overflow: hidden;
-  border-block: 1px solid var(--line);
-  padding: 22px 0;
-  background: var(--orange);
-  color: var(--ink);
-  transform: rotate(-1deg) scale(1.02);
-  position: relative;
-  z-index: 3;
-}
-.ticker > div {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-  width: max-content;
-  animation: ticker 25s linear infinite;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  color: rgba(17, 23, 19, 0.82);
-  font-weight: 800;
-}
-.ticker i {
-  font-style: normal;
-  color: var(--paper);
-}
 .manifesto {
   --local-progress: 0;
   min-height: 110vh;
@@ -1389,11 +1364,6 @@ button {
 @keyframes spin-reverse {
   to {
     transform: rotate(-360deg);
-  }
-}
-@keyframes ticker {
-  to {
-    transform: translateX(-50%);
   }
 }
 @keyframes flow-line { 0% { transform: scaleY(0); opacity: 0; } 35%, 70% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }

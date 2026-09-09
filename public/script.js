@@ -90,7 +90,7 @@ function measureScroll() {
   if (kinetic) {
     const kineticRect = kinetic.getBoundingClientRect();
     const kineticDistance = Math.max(1, kinetic.offsetHeight - window.innerHeight);
-    root.style.setProperty(
+    kinetic.style.setProperty(
       "--kinetic-progress",
       clamp(-kineticRect.top / kineticDistance).toFixed(4),
     );
