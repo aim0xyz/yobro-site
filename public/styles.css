@@ -1321,11 +1321,11 @@ button {
   z-index: -1;
   left: 50%;
   top: 50%;
-  transform: translate(calc(-50% + (var(--local-progress) - .5) * -20vw), -50%);
-  font-size: clamp(180px, 34vw, 540px);
+  transform: translate(calc(-50% + (var(--local-progress) - .5) * -4vw), -50%);
+  font-size: clamp(140px, 25vw, 400px);
   line-height: .7;
   font-weight: 900;
-  letter-spacing: -.1em;
+  letter-spacing: -.08em;
   color: transparent;
   -webkit-text-stroke: 1px rgba(243,240,231,.055);
   white-space: nowrap;
