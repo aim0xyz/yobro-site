@@ -5,19 +5,12 @@ const finePointer = window.matchMedia("(pointer: fine)").matches;
 const root = document.documentElement;
 const story = document.querySelector("[data-scroll-story]");
 const scrollVideo = document.querySelector("[data-scroll-video]");
-const address = document.querySelector("[data-address]");
 const indexItems = [...document.querySelectorAll(".story-index span")];
 const sideItems = [...document.querySelectorAll(".side-item")];
 const kinetic = document.querySelector("[data-kinetic]");
 const nav = document.querySelector(".nav");
 const motionSections = [...document.querySelectorAll("[data-motion-section]")];
 
-const addresses = [
-  "yobro://home",
-  "yobro://spaces",
-  "yobro://agent/local",
-  "yobro://privacy",
-];
 
 document.querySelectorAll("#year").forEach((year) => {
   year.textContent = new Date().getFullYear();
@@ -139,7 +132,6 @@ function renderScroll() {
 
   if (scene !== activeScene) {
     activeScene = scene;
-    if (address) address.textContent = addresses[scene];
     indexItems.forEach((item, index) =>
       item.classList.toggle("is-current", index === scene),
     );

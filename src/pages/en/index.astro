@@ -80,19 +80,15 @@
               aria-label="Interactive preview of the YOBRO browser"
             >
               <div class="browser-chrome">
-                <div class="traffic" aria-hidden="true">
-                  <i></i><i></i><i></i>
+                <div class="chrome-navigation" aria-hidden="true">
+                  <span>‹</span><span>›</span><span>↻</span><span>▥</span>
                 </div>
-                <div class="history" aria-hidden="true">
-                  <span>‹</span><span>›</span>
-                </div>
-                <div class="address-bar">
-                  <span class="lock">●</span
-                  ><strong data-address>yobro://home</strong
-                  ><span class="refresh">↻</span>
+                <div class="chrome-title">
+                  <img src="/assets/yobro-mark.png" alt="" />
+                  <strong>yobro</strong><small>PREVIEW</small>
                 </div>
                 <div class="chrome-actions" aria-hidden="true">
-                  <span>⌁</span><span>•••</span>
+                  <span>⌘L</span><span>♢</span><span>◈</span><span>☷</span>
                 </div>
               </div>
               <div class="browser-app">
@@ -174,26 +170,27 @@
                       <div class="panel-label light">
                         <span>02</span><b>LOCAL AGENT</b>
                       </div>
-                      <div class="agent-copy">
-                        <p>Your agent. Your machine.</p>
-                        <h2>Work together.<br /><em>Stay in control.</em></h2>
-                      </div>
-                      <div class="agent-map" aria-hidden="true">
-                        <div class="agent-halo halo-one"></div>
-                        <div class="agent-halo halo-two"></div>
-                        <div class="agent-node">
-                          <img src="/assets/yobro-mark.png" alt="" /><span
-                            >LOCAL</span
-                          >
+                      <div class="agent-split">
+                        <div class="agent-user-pane">
+                          <div class="split-pane-label"><span>YOU</span><i>01</i></div>
+                          <p>Your side</p>
+                          <h2>You set<br />the intent.</h2>
+                          <div class="user-request">
+                            <small>YOUR REQUEST</small>
+                            <span>Build a launch plan from this research.</span>
+                          </div>
+                          <div class="approval-note"><i></i><span>Review before action</span><b>IN CONTROL</b></div>
                         </div>
-                        <div class="task-chip task-one">
-                          <i>01</i><span>Read context</span><b>✓</b>
-                        </div>
-                        <div class="task-chip task-two">
-                          <i>02</i><span>Prepare action</span><b>✓</b>
-                        </div>
-                        <div class="task-chip task-three">
-                          <i>03</i><span>You decide</span><b>✓</b>
+                        <div class="agent-machine-pane">
+                          <div class="split-pane-label"><span>YOBRO</span><i>02</i></div>
+                          <div class="agent-map" aria-hidden="true">
+                            <div class="agent-node">
+                              <img src="/assets/yobro-mark.png" alt="" /><span>LOCAL</span>
+                            </div>
+                            <div class="task-chip task-one"><i>01</i><span>Read context</span><b>✓</b></div>
+                            <div class="task-chip task-two"><i>02</i><span>Prepare action</span><b>✓</b></div>
+                            <div class="task-chip task-three"><i>03</i><span>You decide</span><b>✓</b></div>
+                          </div>
                         </div>
                       </div>
                     </section>
