@@ -125,7 +125,7 @@ function renderScroll() {
   smoothProgress += (targetProgress - smoothProgress) * 0.12;
   const entrance = clamp(smoothProgress / 0.2);
   const browserEntrance = clamp((smoothProgress - 0.24) / 0.34);
-  const journey = clamp((smoothProgress - 0.3) / 0.65);
+  const journey = clamp((smoothProgress - 0.58) / 0.37);
   const scene = Math.min(3, Math.floor(journey * 3.999));
 
   root.style.setProperty("--story-progress", entrance.toFixed(4));
