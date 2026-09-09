@@ -196,6 +196,7 @@ button {
   height: 540vh;
   position: relative;
   z-index: 2;
+  background: var(--section-green);
 }
 .story-sticky:before {
   content: "";
@@ -206,6 +207,8 @@ button {
   bottom: 0;
   height: min(58vh, 580px);
   pointer-events: none;
+  opacity: clamp(0, calc((var(--story-fade-progress, 0) - .56) * 5.3), 1);
+  will-change: opacity;
   background: linear-gradient(
     to bottom,
     rgba(19, 36, 27, 0) 0%,
@@ -305,6 +308,9 @@ button {
 .manifesto em {
   color: var(--sage);
   font-style: italic;
+}
+.story-intro em {
+  color: var(--section-green);
 }
 .story-intro > p:last-child {
   margin-top: 45px;
