@@ -114,10 +114,12 @@ if (!reducedMotion && finePointer) {
 function renderScroll() {
   smoothProgress += (targetProgress - smoothProgress) * 0.12;
   const entrance = clamp(smoothProgress / 0.2);
-  const journey = clamp((smoothProgress - 0.16) / 0.79);
+  const browserEntrance = clamp((smoothProgress - 0.24) / 0.34);
+  const journey = clamp((smoothProgress - 0.3) / 0.65);
   const scene = Math.min(3, Math.floor(journey * 3.999));
 
   root.style.setProperty("--story-progress", entrance.toFixed(4));
+  root.style.setProperty("--browser-progress", browserEntrance.toFixed(4));
   root.style.setProperty("--feed-offset", `${(-journey * 75).toFixed(3)}%`);
 
   if (scrollVideo && videoDuration && scrollVideo.readyState >= 2) {

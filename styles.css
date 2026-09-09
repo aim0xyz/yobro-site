@@ -11,6 +11,7 @@
   --line: rgba(243, 240, 231, 0.15);
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --story-progress: 0;
+  --browser-progress: 0;
   --feed-offset: 0%;
 }
 * {
@@ -237,7 +238,7 @@ button {
   z-index: 2;
   pointer-events: none;
   color: var(--ink);
-  opacity: clamp(0, calc(1 - var(--story-progress) * 7), 1);
+  opacity: clamp(0, calc(1 - var(--story-progress) * 4.8), 1);
 }
 .story-intro .eyebrow {
   color: var(--sage-deep);
@@ -325,15 +326,15 @@ button {
   border: 1px solid rgba(255, 255, 255, 0.32);
   box-shadow: 0 60px 150px rgba(0, 0, 0, 0.48);
   z-index: 5;
-  opacity: clamp(0, calc(var(--story-progress) * 2 - 0.25), 1);
+  opacity: var(--browser-progress);
   transform: translate3d(
-      calc(24vw - var(--story-progress) * 24vw),
-      calc(25vh - var(--story-progress) * 25vh),
+      calc(24vw - var(--browser-progress) * 24vw),
+      calc(25vh - var(--browser-progress) * 25vh),
       0
     )
-    rotateY(calc(-12deg + var(--story-progress) * 12deg))
-    rotateX(calc(5deg - var(--story-progress) * 5deg))
-    scale(calc(0.54 + var(--story-progress) * 0.46));
+    rotateY(calc(-12deg + var(--browser-progress) * 12deg))
+    rotateX(calc(5deg - var(--browser-progress) * 5deg))
+    scale(calc(0.54 + var(--browser-progress) * 0.46));
   will-change: transform, opacity;
 }
 .browser-chrome {
@@ -1324,13 +1325,13 @@ button {
   }
   .browser-shell {
     transform: translate3d(
-        calc(10vw - var(--story-progress) * 10vw),
-        calc(28vh - var(--story-progress) * 28vh),
+        calc(10vw - var(--browser-progress) * 10vw),
+        calc(28vh - var(--browser-progress) * 28vh),
         0
       )
-      rotateY(calc(-8deg + var(--story-progress) * 8deg))
-      rotateX(calc(4deg - var(--story-progress) * 4deg))
-      scale(calc(0.58 + var(--story-progress) * 0.42));
+      rotateY(calc(-8deg + var(--browser-progress) * 8deg))
+      rotateX(calc(4deg - var(--browser-progress) * 4deg))
+      scale(calc(0.58 + var(--browser-progress) * 0.42));
   }
   .agent-copy {
     left: 5%;
@@ -1371,10 +1372,10 @@ button {
     width: calc(100vw - 20px);
     height: calc(100svh - 94px);
     border-radius: 17px;
-    transform: translate3d(8vw, calc(30vh - var(--story-progress) * 30vh), 0)
-      rotateY(calc(-7deg + var(--story-progress) * 7deg))
-      rotateX(calc(3deg - var(--story-progress) * 3deg))
-      scale(calc(0.56 + var(--story-progress) * 0.44));
+    transform: translate3d(8vw, calc(30vh - var(--browser-progress) * 30vh), 0)
+      rotateY(calc(-7deg + var(--browser-progress) * 7deg))
+      rotateX(calc(3deg - var(--browser-progress) * 3deg))
+      scale(calc(0.56 + var(--browser-progress) * 0.44));
   }
   .browser-chrome {
     height: 45px;
