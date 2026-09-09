@@ -232,8 +232,8 @@ button {
 .story-intro {
   position: absolute;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -49%);
+  top: 36%;
+  transform: translate(-50%, -50%);
   z-index: 2;
   pointer-events: none;
   color: var(--ink);
@@ -1355,7 +1355,7 @@ button {
     height: 470vh;
   }
   .story-intro {
-    top: 40%;
+    top: 34%;
   }
   .story-intro h1 {
     font-size: 58px;
