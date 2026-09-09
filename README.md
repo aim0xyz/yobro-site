@@ -1,16 +1,25 @@
 # YOBRO Site
 
-Motion landing page and secure web-to-app authentication bridge for [YOBRO](https://yobro.lol).
+Astro-powered motion landing page and secure web-to-app authentication bridge for [YOBRO](https://yobro.lol).
 
 ## Local preview
 
-Serve this directory with any static web server, for example:
+Install dependencies and start Astro:
 
 ```sh
-python3 -m http.server 4173
+npm install
+npm run dev -- --port 4173
 ```
 
-Then open `http://localhost:4173`.
+Then open `http://localhost:4173/en/`.
+
+Create the production build with:
+
+```sh
+npm run build
+```
+
+The static output is written to `dist/`.
 
 ## Routes
 
