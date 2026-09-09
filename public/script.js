@@ -95,7 +95,7 @@ function measureScroll() {
     const browserRect = browserShell.getBoundingClientRect();
     nav?.classList.toggle(
       "is-story-hidden",
-      targetProgress > 0.2 && browserRect.bottom > 24 && browserRect.top < window.innerHeight - 24,
+      targetProgress > 0.28 && browserRect.bottom > 24 && browserRect.top < window.innerHeight - 24,
     );
   }
   motionSections.forEach((section) => {
