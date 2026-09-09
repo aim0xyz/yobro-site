@@ -78,6 +78,7 @@ function measureScroll() {
     const rect = story.getBoundingClientRect();
     const distance = Math.max(1, story.offsetHeight - window.innerHeight);
     targetProgress = clamp(-rect.top / distance);
+    root.style.setProperty("--story-fade-progress", targetProgress.toFixed(4));
   }
   const pageDistance = Math.max(
     1,
@@ -126,7 +127,6 @@ function renderScroll() {
   const scene = Math.min(3, Math.floor(journey * 3.999));
 
   root.style.setProperty("--story-progress", entrance.toFixed(4));
-  root.style.setProperty("--story-raw-progress", smoothProgress.toFixed(4));
   root.style.setProperty("--browser-progress", browserEntrance.toFixed(4));
   root.style.setProperty("--feed-offset", `${(-journey * 75).toFixed(3)}%`);
 
