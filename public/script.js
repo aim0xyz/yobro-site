@@ -44,6 +44,7 @@ let smoothProgress = 0;
 let activeScene = -1;
 let rafPending = false;
 let videoDuration = 0;
+const videoStartTime = 1;
 const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
 
 if (scrollVideo) {
@@ -51,10 +52,12 @@ if (scrollVideo) {
   scrollVideo.autoplay = false;
   scrollVideo.pause();
   const prepareScrollVideo = () => {
-    videoDuration = Math.max(0, scrollVideo.duration - 0.04);
-    scrollVideo.currentTime = reducedMotion
-      ? 0
-      : targetProgress * videoDuration;
+    videoDuration = Math.max(
+      0,
+      scrollVideo.duration - videoStartTime - 0.04,
+    );
+    scrollVideo.currentTime =
+      videoStartTime + (reducedMotion ? 0 : targetProgress * videoDuration);
   };
   if (scrollVideo.readyState >= 1) {
     prepareScrollVideo();
@@ -133,7 +136,7 @@ function renderScroll() {
   root.style.setProperty("--feed-offset", `${(-journey * 75).toFixed(3)}%`);
 
   if (scrollVideo && videoDuration && scrollVideo.readyState >= 2) {
-    const requestedTime = smoothProgress * videoDuration;
+    const requestedTime = videoStartTime + smoothProgress * videoDuration;
     if (Math.abs(scrollVideo.currentTime - requestedTime) > 0.025) {
       scrollVideo.currentTime = requestedTime;
     }
