@@ -903,17 +903,6 @@ button {
   font-weight: 800;
   letter-spacing: .2em;
 }
-.agent-map:after {
-  content: "";
-  position: absolute;
-  left: 53px;
-  top: 115px;
-  bottom: 48px;
-  width: 1px;
-  background: linear-gradient(var(--orange), rgba(255,90,36,.12));
-  transform-origin: top;
-  animation: flow-line 2.4s var(--ease) infinite;
-}
 .agent-halo {
   display: none;
 }
@@ -1445,7 +1434,6 @@ button {
     transform: rotate(-360deg);
   }
 }
-@keyframes flow-line { 0% { transform: scaleY(0); opacity: 0; } 35%, 70% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
 @keyframes float-mark { to { transform: translateY(-14px); } }
 @keyframes command-scan { 0%, 45% { transform: translateX(-110%); } 78%, 100% { transform: translateX(110%); } }
 @keyframes flow-step { 0%, 18%, 100% { border-color: rgba(255,90,36,.25); transform: translateX(0); } 8% { border-color: var(--orange); transform: translateX(7px); box-shadow: 0 16px 38px rgba(255,90,36,.12); } }
