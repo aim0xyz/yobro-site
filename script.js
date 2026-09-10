@@ -57,17 +57,63 @@ const videoFPS = 24;
 let lastVideoFrame = 0;
 let wantedVideoFrame = 0;
 let requestedVideoFrame = -1;
+let videoSeekStarted = 0;
+let videoSeekTimer = null;
+const videoSeekTimeout = 750;
 const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
 
+// Keep a single pending target and a watchdog independent of scroll events.
+// Some decoders stay in `seeking` or drop readyState while decoding a jump.
+function scheduleVideoSeek() {
+  if (videoSeekTimer !== null) return;
+  videoSeekTimer = setTimeout(() => {
+    videoSeekTimer = null;
+    seekLatestVideoFrame();
+  }, 100);
+}
+
 function seekLatestVideoFrame() {
-  if (!scrollVideo || !videoDuration || scrollVideo.readyState < 2 ||
-      scrollVideo.seeking || requestedVideoFrame === wantedVideoFrame) return;
-  requestedVideoFrame = wantedVideoFrame;
-  // Seek just inside the frame, avoiding floating-point ambiguity at frame edges.
-  scrollVideo.currentTime = Math.min(
-    videoDuration - 0.001,
-    (wantedVideoFrame + 0.125) / videoFPS,
-  );
+  if (!scrollVideo || !videoDuration || scrollVideo.error || document.hidden) return;
+  const now = performance.now();
+  const pending = requestedVideoFrame >= 0;
+  const timedOut = pending && now - videoSeekStarted >= videoSeekTimeout;
+
+  if (scrollVideo.seeking && !timedOut) {
+    // Also watch seeks initiated by the browser itself.
+    if (!pending) {
+      requestedVideoFrame = wantedVideoFrame;
+      videoSeekStarted = now;
+    }
+    scheduleVideoSeek();
+    return;
+  }
+  // HAVE_METADATA is enough to request a seek. Waiting for HAVE_CURRENT_DATA
+  // here can deadlock when the old frame is no longer buffered.
+  if (scrollVideo.readyState < 1) {
+    scheduleVideoSeek();
+    return;
+  }
+  const targetTime = Math.min(videoDuration - 0.001, (wantedVideoFrame + 0.125) / videoFPS);
+  if (!scrollVideo.seeking && scrollVideo.readyState >= 2 &&
+      Math.abs(scrollVideo.currentTime - targetTime) < 0.5 / videoFPS) {
+    requestedVideoFrame = -1;
+    clearTimeout(videoSeekTimer);
+    videoSeekTimer = null;
+    return;
+  }
+  if (pending && !timedOut) {
+    scheduleVideoSeek();
+    return;
+  }
+  try {
+    scrollVideo.currentTime = targetTime;
+    requestedVideoFrame = wantedVideoFrame;
+    videoSeekStarted = now;
+  } catch {
+    // Metadata can disappear during a source reload; retry after it returns.
+    requestedVideoFrame = -1;
+  }
+  scheduleVideoSeek();
 }
 
 function updateVideoTarget() {
@@ -89,8 +135,13 @@ if (scrollVideo) {
   scrollVideo.addEventListener("loadedmetadata", prepareScrollVideo);
   scrollVideo.addEventListener("loadeddata", updateVideoTarget);
   scrollVideo.addEventListener("canplay", updateVideoTarget);
-  // Keep only the latest requested frame. Never interrupt a seek in progress.
-  scrollVideo.addEventListener("seeked", seekLatestVideoFrame);
+  // A completed seek releases the queue; always follow the newest scroll target.
+  scrollVideo.addEventListener("seeked", () => {
+    requestedVideoFrame = -1;
+    seekLatestVideoFrame();
+  });
+  document.addEventListener("visibilitychange", updateVideoTarget);
+  window.addEventListener("pageshow", updateVideoTarget);
   scrollVideo.addEventListener("play", () => scrollVideo.pause());
   if (scrollVideo.readyState >= 1) prepareScrollVideo();
 }
