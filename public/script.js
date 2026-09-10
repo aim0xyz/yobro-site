@@ -46,7 +46,7 @@ let rafPending = false;
 let videoDuration = 0;
 let scrollDirty = true;
 let previousRenderTime = null;
-// The source is 24 fps; the scrub encode makes every frame independently seekable.
+// The source is 24 fps; the scrub encode has a keyframe every four frames.
 const videoFPS = 24;
 let lastVideoFrame = 0;
 let wantedVideoFrame = 0;
