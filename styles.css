@@ -1655,3 +1655,160 @@ button {
     display: none;
   }
 }
+
+/* Native YOBRO shell: BrowserShell.swift (248px sidebar), Theme.swift. */
+.browser-shell { border-radius: 14px; background: linear-gradient(135deg, #e3e6d6, #d6ded4); }
+.browser-app.native-browser { height: 100%; padding: 0; grid-template-columns: 248px minmax(0, 1fr); background: transparent; color: #303b3b; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; }
+.native-browser .app-sidebar { display: flex; padding: 10px 17px 6px; color: #303b3b; }
+.native-browser svg { width: 16px; height: 16px; flex-shrink: 0; }
+.native-window-row { height: 32px; display: flex; align-items: center; justify-content: space-between; margin: 0 -7px 16px; }
+.native-traffic { display: flex; gap: 8px; padding-left: 7px; }
+.native-traffic i { width: 12px; height: 12px; border-radius: 50%; background: #ff5f57; box-shadow: inset 0 0 0 1px #00000012; }
+.native-traffic i:nth-child(2) { background: #febc2e; }
+.native-traffic i:nth-child(3) { background: #28c840; }
+.native-history { display: flex; align-items: center; gap: 12px; color: #303b3b80; }
+.native-history svg { width: 14px; height: 14px; }
+.native-history svg:nth-child(-n+2) { opacity: .4; }
+.native-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; height: 35px; }
+.native-brand img { width: 30px; height: 30px; object-fit: contain; }
+.native-brand b { font-family: ui-rounded, -apple-system, sans-serif; font-size: 29px; font-weight: 600; letter-spacing: -1.4px; }
+.native-brand small { margin-left: auto; font: bold 8px ui-monospace, monospace; letter-spacing: 1px; color: #4f6654; }
+.native-address { display: flex; align-items: center; gap: 7px; min-height: 48px; padding: 4px 4px 4px 12px; border: 1px solid #303b3b0d; background: #ffffff80; border-radius: 12px; }
+.native-address > svg { width: 11px; color: #4f6654; }
+.native-address > span:not(.native-actions) { font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; opacity: .75; }
+.native-actions { display: grid; place-items: center; width: 32px; height: 38px; border-radius: 9px; background: #303b3b0f; }
+.native-mail { display: flex; align-items: center; gap: 10px; height: 44px; margin: 10px 0 12px; padding: 0 14px; background: #ffffff66; border-radius: 10px; font-size: 12px; }
+.native-mail svg { color: #4f6654; width: 18px; height: 18px; }
+.native-mail-count { margin-left: auto; color: #303b3b66; font-size: 10px; }
+.native-space-strip { display: flex; align-items: center; gap: 4px; padding: 3px; border-radius: 11px; background: #303b3b0b; }
+.native-space-strip > div { flex: 1; display: flex; align-items: center; gap: 8px; height: 34px; padding: 0 10px; border-radius: 8px; background: #ffffffbf; }
+.native-space-strip b { font-size: 11px; font-weight: 600; }
+.native-space-strip small { margin-left: auto; font-size: 9px; opacity: .5; }
+.native-space-strip svg { width: 13px; color: #4f6654; }
+.native-space-strip > svg { width: 24px; }
+.native-space-strip > div > svg:last-child { width: 8px; opacity: .5; }
+.native-tab-label { display: flex; justify-content: space-between; padding: 23px 0 9px 10px; font-size: 9px; letter-spacing: 1.4px; color: #303b3b66; }
+.native-tab-label small { font: 10px ui-monospace, monospace; }
+.native-tab, .native-new-tab { display: flex; align-items: center; gap: 10px; padding: 0 11px; min-height: 44px; font-size: 12px; border-radius: 9px; }
+.native-tab { background: #ffffffbf; font-weight: 500; }
+.native-tab > svg:first-child { color: #4f6654; }
+.native-tab > svg:last-child { margin-left: auto; width: 10px; opacity: .35; }
+.native-new-tab { margin-top: 10px; color: #303b3b8c; }
+.native-new-tab kbd { margin-left: auto; font: 10px ui-monospace, monospace; opacity: .5; }
+.native-sidebar-bottom { margin-top: auto; padding-top: 12px; }
+.native-library { display: flex; justify-content: space-between; gap: 8px; padding: 10px 6px; }
+.native-library span { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #303b3b99; }
+.native-library svg { width: 14px; }
+.native-agent { padding: 13px; border-radius: 12px; background: #ffffff52; }
+.native-agent > div { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 500; }
+.native-agent i { width: 6px; height: 6px; border-radius: 50%; background: #4f6654; }
+.native-agent svg { margin-left: auto; width: 10px; }
+.native-agent small { display: block; margin-top: 9px; font-size: 10px; color: #303b3b80; }
+.native-profile { display: flex; align-items: center; gap: 9px; padding: 12px 8px 4px; font-size: 11px; }
+.native-profile > svg { width: 25px; height: 25px; padding: 5px; background: #4f665414; border-radius: 50%; }
+.native-profile small { margin-left: auto; }
+.native-browser .browser-viewport { margin: 10px 10px 10px 0; border-radius: 14px; border: 1px solid #303b3b14; background: #f9f8f4; }
+.native-browser .panel-home { background: #f9f8f4; }
+@media (max-width: 700px) {
+ .browser-app.native-browser { grid-template-columns: 80px minmax(0, 1fr); }
+ .native-browser .app-sidebar { display: flex; padding: 10px 10px 14px; align-items: center; }
+ .native-window-row { height: 32px; margin: 0 0 20px; }
+ .native-traffic { padding: 0; gap: 6px; }
+ .native-traffic i { width: 11px; height: 11px; }
+ .native-history, .native-brand, .native-tab-label, .native-new-tab kbd, .native-address > span, .native-address > svg:nth-of-type(2), .native-mail span, .native-space-strip b, .native-space-strip small, .native-space-strip > svg, .native-tab span, .native-tab > svg:last-child, .native-new-tab span, .native-agent, .native-profile span, .native-profile small { display: none; }
+ .native-address, .native-mail, .native-tab, .native-new-tab { justify-content: center; padding: 0; width: 42px; height: 40px; min-height: 40px; border: 0; margin: 4px 0; background: transparent; }
+ .native-address > svg { width: 17px; }
+ .native-space-strip { padding: 0; background: transparent; margin: 8px 0; }
+ .native-space-strip > div { width: 42px; height: 40px; justify-content: center; padding: 0; gap: 0; background: #4f66542e; }
+ .native-space-strip > div > svg:first-child { width: 19px; height: 19px; }
+ .native-tab { background: #4f66542e; }
+ .native-library { flex-direction: column; padding: 4px; background: #ffffff3d; border-radius: 13px; }
+ .native-library span { font-size: 0; width: 42px; height: 36px; justify-content: center; gap: 0; }
+ .native-library svg { width: 17px; height: 17px; }
+ .native-profile { justify-content: center; padding: 8px 0 0; }
+ .native-sidebar-bottom { width: 50px; }
+ .native-browser .browser-viewport { margin: 6px 6px 6px 0; }
+}
+@media (max-height: 720px) and (min-width: 701px) {
+ .native-brand { margin-bottom: 10px; }
+ .native-window-row { margin-bottom: 8px; }
+ .native-tab-label { padding-top: 14px; }
+ .native-library { padding-block: 6px; }
+ .native-profile { padding-top: 6px; }
+}
+
+@media (max-height: 800px) and (min-width: 701px) {
+ .native-browser .app-sidebar { min-height: 0; }
+ .native-window-row { flex-shrink: 0; height: 24px; margin-bottom: 6px; }
+ .native-brand { flex-shrink: 0; height: 30px; margin-bottom: 10px; }
+ .native-mail { flex-shrink: 0; height: 34px; margin-block: 7px; }
+ .native-tab-label { padding-top: 12px; padding-bottom: 7px; }
+ .native-tab, .native-new-tab { min-height: 34px; }
+ .native-new-tab { margin-top: 4px; }
+ .native-sidebar-bottom { padding-top: 6px; }
+ .native-agent { padding: 10px; }
+ .native-library { padding-block: 6px; }
+ .native-profile { padding-top: 6px; }
+}
+
+/* Mail tour follows the mailbox / message list / reader layout in MailViews.swift. */
+.panel-mail { display: flex; flex-direction: column; gap: 20px; background: #f9f8f4; }
+.mail-story-copy h2 { margin: 0 0 9px; font: 400 clamp(28px, 3.3vw, 48px)/1.05 "Iowan Old Style", Baskerville, Georgia, serif; letter-spacing: -.045em; }
+.mail-story-copy p { margin: 0; max-width: 530px; font-size: 14px; line-height: 1.5; color: #66766a; }
+.mail-demo { min-height: 0; flex: 1; display: flex; flex-direction: column; border: 1px solid #303b3b18; border-radius: 14px; overflow: hidden; background: #f9f8f4; box-shadow: 0 12px 35px #303b3b0a; }
+.mail-demo-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; border-bottom: 1px solid #303b3b14; }
+.mail-demo-toolbar > b { font: 500 21px Georgia, serif; }
+.mail-demo-toolbar > span { font-size: 11px; color: #4f6654; }
+.mail-demo-toolbar i { font-style: normal; margin-left: 5px; }
+.mail-demo-layout { flex: 1; min-height: 0; display: grid; grid-template-columns: 130px minmax(145px, .8fr) minmax(0, 1.25fr); }
+.mail-demo-accounts { display: flex; flex-direction: column; padding: 16px 8px; gap: 5px; background: #4f665408; border-right: 1px solid #303b3b14; }
+.mail-demo-accounts > small { font-size: 9px; letter-spacing: 1.2px; padding: 0 7px 10px; color: #7a857b; }
+.mail-demo-accounts > div { display: flex; align-items: center; justify-content: space-between; padding: 10px 7px; border-radius: 7px; font-size: 11px; }
+.mail-demo-accounts .selected { background: #4f665419; color: #4f6654; font-weight: 600; }
+.mail-demo-accounts b { font-size: 9px; }
+.mail-demo-accounts i { width: 5px; height: 5px; background: #4f6654; border-radius: 50%; }
+.mail-demo-accounts > span { margin-top: auto; padding: 14px 7px 0; font-size: 10px; line-height: 1.7; color: #798379; }
+.mail-demo-list { border-right: 1px solid #303b3b14; overflow: hidden; }
+.mail-demo-search { margin: 10px; padding: 9px; background: #303b3b06; border-radius: 6px; font-size: 10px; color: #7b857d; }
+.mail-demo-list article { padding: 14px 12px; border-bottom: 1px solid #303b3b0b; }
+.mail-demo-list article.selected { background: #4f665415; }
+.mail-demo-list article > div { display: flex; justify-content: space-between; gap: 5px; font-size: 11px; }
+.mail-demo-list time { font-size: 9px; color: #8a948c; }
+.mail-demo-list strong { display: block; font-size: 12px; font-weight: 400; margin: 7px 0; }
+.mail-demo-list small { font-size: 9px; color: #4f6654; }
+.mail-demo-message { padding: 18px; overflow: auto; }
+.mail-demo-message h3 { font: 400 22px/1.15 Georgia, serif; margin: 0 0 10px; }
+.mail-demo-message > small { font-size: 10px; color: #788079; overflow-wrap: anywhere; }
+.mail-demo-message > p { font-size: 12px; line-height: 1.6; margin: 20px 0; }
+.mail-demo-attachment { display: block; font-size: 11px; padding: 9px; border: 1px solid #303b3b14; border-radius: 7px; }
+.mail-demo-attachment small { color: #859087; font-size: 9px; margin-left: 6px; }
+.mail-demo-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
+.mail-demo-actions span { font-size: 10px; border: 1px solid #4f66542b; padding: 7px; border-radius: 6px; color: #4f6654; }
+.mail-demo-agent { display: grid; gap: 7px; margin-top: 12px; padding: 12px; background: #4f665412; border-radius: 8px; color: #4f6654; }
+.mail-demo-agent b { font-size: 11px; font-weight: 500; }
+.mail-demo-agent span { font-size: 10px; line-height: 1.5; }
+.mail-story-footer { margin: 0; font-size: 11px; color: #728174; line-height: 1.5; }
+.native-mail.is-active { background: #4f665426; color: #4f6654; }
+@media (max-width: 1100px) { .mail-demo-layout { grid-template-columns: minmax(140px, .7fr) minmax(0, 1fr); } .mail-demo-accounts { display: none; } }
+@media (max-width: 700px) {
+ .panel-mail { gap: 14px; padding: 22px 14px; }
+ .mail-story-copy h2 { font-size: 30px; }
+ .mail-story-copy p { font-size: 12px; }
+ .mail-demo-layout { grid-template-columns: minmax(0, 1fr); }
+ .mail-demo-list { display: none; }
+ .mail-demo-toolbar { padding: 11px; }
+ .mail-demo-toolbar > b { font-size: 19px; }
+ .mail-demo-toolbar > span { display: none; }
+ .mail-demo-message { padding: 14px; }
+ .mail-demo-message h3 { font-size: 20px; }
+ .mail-demo-message > p { margin: 12px 0; }
+ .mail-story-footer { font-size: 10px; }
+}
+@media (max-height: 740px) and (min-width: 701px) {
+ .panel-mail { gap: 12px; padding-top: 22px; padding-bottom: 18px; }
+ .mail-story-copy h2 { font-size: 32px; }
+ .mail-story-copy p { font-size: 12px; }
+ .mail-demo-message { padding: 12px; }
+ .mail-demo-message > p { margin: 12px 0; }
+ .mail-demo-agent { margin-top: 8px; padding: 9px; }
+}

@@ -5,7 +5,7 @@ const finePointer = window.matchMedia("(pointer: fine)").matches;
 const root = document.documentElement;
 const story = document.querySelector("[data-scroll-story]");
 const scrollVideo = document.querySelector("[data-scroll-video]");
-const address = document.querySelector("[data-address]");
+const browserShell = document.querySelector(".browser-shell");
 const indexItems = [...document.querySelectorAll(".story-index span")];
 const sideItems = [...document.querySelectorAll(".side-item")];
 const kinetic = document.querySelector("[data-kinetic]");
@@ -50,26 +50,60 @@ let smoothProgress = 0;
 let activeScene = -1;
 let rafPending = false;
 let videoDuration = 0;
+let scrollDirty = true;
+let previousRenderTime = null;
+// The source is 24 fps; the scrub encode makes every frame independently seekable.
+const videoFPS = 24;
+let lastVideoFrame = 0;
+let wantedVideoFrame = 0;
+let requestedVideoFrame = -1;
 const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
+
+function seekLatestVideoFrame() {
+  if (!scrollVideo || !videoDuration || scrollVideo.readyState < 2 ||
+      scrollVideo.seeking || requestedVideoFrame === wantedVideoFrame) return;
+  requestedVideoFrame = wantedVideoFrame;
+  // Seek just inside the frame, avoiding floating-point ambiguity at frame edges.
+  scrollVideo.currentTime = Math.min(
+    videoDuration - 0.001,
+    (wantedVideoFrame + 0.125) / videoFPS,
+  );
+}
+
+function updateVideoTarget() {
+  wantedVideoFrame = Math.round((reducedMotion ? 0 : targetProgress) * lastVideoFrame);
+  seekLatestVideoFrame();
+}
 
 if (scrollVideo) {
   scrollVideo.loop = false;
   scrollVideo.autoplay = false;
   scrollVideo.pause();
   const prepareScrollVideo = () => {
-    videoDuration = Math.max(0, scrollVideo.duration - 0.04);
-    scrollVideo.currentTime = reducedMotion
-      ? 0
-      : targetProgress * videoDuration;
+    if (!Number.isFinite(scrollVideo.duration) || scrollVideo.duration <= 0) return;
+    videoDuration = scrollVideo.duration;
+    lastVideoFrame = Math.max(0, Math.round(videoDuration * videoFPS) - 1);
+    requestedVideoFrame = -1;
+    updateVideoTarget();
   };
-  if (scrollVideo.readyState >= 1) {
-    prepareScrollVideo();
-  } else {
-    scrollVideo.addEventListener("loadedmetadata", prepareScrollVideo, {
-      once: true,
-    });
-  }
+  scrollVideo.addEventListener("loadedmetadata", prepareScrollVideo);
+  scrollVideo.addEventListener("loadeddata", updateVideoTarget);
+  scrollVideo.addEventListener("canplay", updateVideoTarget);
+  // Keep only the latest requested frame. Never interrupt a seek in progress.
+  scrollVideo.addEventListener("seeked", seekLatestVideoFrame);
   scrollVideo.addEventListener("play", () => scrollVideo.pause());
+  if (scrollVideo.readyState >= 1) prepareScrollVideo();
+}
+
+function scheduleScrollRender() {
+  if (rafPending) return;
+  rafPending = true;
+  requestAnimationFrame(renderScroll);
+}
+
+function requestScrollUpdate() {
+  scrollDirty = true;
+  scheduleScrollRender();
 }
 
 function measureScroll() {
@@ -78,6 +112,7 @@ function measureScroll() {
     const rect = story.getBoundingClientRect();
     const distance = Math.max(1, story.offsetHeight - window.innerHeight);
     targetProgress = clamp(-rect.top / distance);
+    root.style.setProperty("--story-fade-progress", targetProgress.toFixed(4));
   }
   const pageDistance = Math.max(
     1,
@@ -89,23 +124,28 @@ function measureScroll() {
   );
   if (kinetic) {
     const kineticRect = kinetic.getBoundingClientRect();
-    const kineticDistance = Math.max(1, kinetic.offsetHeight - window.innerHeight);
-    root.style.setProperty(
+    const kineticDistance = Math.max(1, kinetic.offsetHeight + window.innerHeight);
+    kinetic.style.setProperty(
       "--kinetic-progress",
-      clamp(-kineticRect.top / kineticDistance).toFixed(4),
+      clamp((window.innerHeight - kineticRect.top) / kineticDistance).toFixed(4),
     );
   }
   nav?.classList.toggle("is-condensed", window.scrollY > window.innerHeight * 0.65);
+  if (browserShell) {
+    const browserRect = browserShell.getBoundingClientRect();
+    const browserHasTakenOver =
+      targetProgress > 0.32 &&
+      browserRect.bottom > 24 &&
+      browserRect.top < window.innerHeight - 24;
+    nav?.classList.toggle("is-story-hidden", browserHasTakenOver);
+  }
   motionSections.forEach((section) => {
     const sectionRect = section.getBoundingClientRect();
     const travel = section.offsetHeight + window.innerHeight;
     const localProgress = clamp((window.innerHeight - sectionRect.top) / travel);
     section.style.setProperty("--local-progress", localProgress.toFixed(4));
   });
-  if (!rafPending) {
-    rafPending = true;
-    requestAnimationFrame(renderScroll);
-  }
+  updateVideoTarget();
 }
 
 if (!reducedMotion && finePointer) {
@@ -118,27 +158,28 @@ if (!reducedMotion && finePointer) {
   });
 }
 
-function renderScroll() {
-  smoothProgress += (targetProgress - smoothProgress) * 0.12;
+function renderScroll(timestamp) {
+  if (scrollDirty) {
+    scrollDirty = false;
+    measureScroll();
+  }
+  const elapsed = previousRenderTime === null ? 1000 / 60 : Math.min(64, timestamp - previousRenderTime);
+  previousRenderTime = timestamp;
+  // Time-based easing behaves the same on 60 Hz and 120 Hz displays.
+  smoothProgress += (targetProgress - smoothProgress) * (1 - Math.exp(-elapsed / 55));
+  if (Math.abs(targetProgress - smoothProgress) <= 0.0001) smoothProgress = targetProgress;
   const entrance = clamp(smoothProgress / 0.2);
   const browserEntrance = clamp((smoothProgress - 0.24) / 0.34);
-  const journey = clamp((smoothProgress - 0.3) / 0.65);
-  const scene = Math.min(3, Math.floor(journey * 3.999));
+  const journey = clamp((smoothProgress - 0.58) / 0.37);
+  const scene = Math.round(journey * 3);
 
   root.style.setProperty("--story-progress", entrance.toFixed(4));
   root.style.setProperty("--browser-progress", browserEntrance.toFixed(4));
-  root.style.setProperty("--feed-offset", `${(-journey * 75).toFixed(3)}%`);
-
-  if (scrollVideo && videoDuration && scrollVideo.readyState >= 2) {
-    const requestedTime = smoothProgress * videoDuration;
-    if (Math.abs(scrollVideo.currentTime - requestedTime) > 0.025) {
-      scrollVideo.currentTime = requestedTime;
-    }
-  }
+  root.style.setProperty("--feed-offset", `${(-journey * 75).toFixed(6)}%`);
 
   if (scene !== activeScene) {
     activeScene = scene;
-    if (address) address.textContent = addresses[scene];
+    document.querySelector(".native-mail")?.classList.toggle("is-active", scene === 1);
     indexItems.forEach((item, index) =>
       item.classList.toggle("is-current", index === scene),
     );
@@ -148,18 +189,19 @@ function renderScroll() {
     });
   }
 
-  if (Math.abs(targetProgress - smoothProgress) > 0.0005) {
-    requestAnimationFrame(renderScroll);
+  rafPending = false;
+  if (smoothProgress !== targetProgress || scrollDirty) {
+    scheduleScrollRender();
   } else {
-    smoothProgress = targetProgress;
-    rafPending = false;
+    previousRenderTime = null;
   }
 }
 
 if (!reducedMotion) {
-  window.addEventListener("scroll", measureScroll, { passive: true });
-  window.addEventListener("resize", measureScroll, { passive: true });
-  measureScroll();
+  window.addEventListener("scroll", requestScrollUpdate, { passive: true });
+  window.addEventListener("resize", requestScrollUpdate, { passive: true });
+  window.addEventListener("pageshow", requestScrollUpdate);
+  requestScrollUpdate();
 }
 
 if (!reducedMotion && finePointer) {
