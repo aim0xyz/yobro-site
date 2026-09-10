@@ -50,111 +50,26 @@ let smoothProgress = 0;
 let activeScene = -1;
 let rafPending = false;
 let videoDuration = 0;
-let scrollDirty = true;
-let previousRenderTime = null;
-// The source is 24 fps; the scrub encode has a keyframe every four frames.
-const videoFPS = 24;
-let lastVideoFrame = 0;
-let wantedVideoFrame = 0;
-let requestedVideoFrame = -1;
-let videoSeekStarted = 0;
-let videoSeekTimer = null;
-const videoSeekTimeout = 750;
 const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
-
-// Keep a single pending target and a watchdog independent of scroll events.
-// Some decoders stay in `seeking` or drop readyState while decoding a jump.
-function scheduleVideoSeek() {
-  if (videoSeekTimer !== null) return;
-  videoSeekTimer = setTimeout(() => {
-    videoSeekTimer = null;
-    seekLatestVideoFrame();
-  }, 100);
-}
-
-function seekLatestVideoFrame() {
-  if (!scrollVideo || !videoDuration || scrollVideo.error || document.hidden) return;
-  const now = performance.now();
-  const pending = requestedVideoFrame >= 0;
-  const timedOut = pending && now - videoSeekStarted >= videoSeekTimeout;
-
-  if (scrollVideo.seeking && !timedOut) {
-    // Also watch seeks initiated by the browser itself.
-    if (!pending) {
-      requestedVideoFrame = wantedVideoFrame;
-      videoSeekStarted = now;
-    }
-    scheduleVideoSeek();
-    return;
-  }
-  // HAVE_METADATA is enough to request a seek. Waiting for HAVE_CURRENT_DATA
-  // here can deadlock when the old frame is no longer buffered.
-  if (scrollVideo.readyState < 1) {
-    scheduleVideoSeek();
-    return;
-  }
-  const targetTime = Math.min(videoDuration - 0.001, (wantedVideoFrame + 0.125) / videoFPS);
-  if (!scrollVideo.seeking && scrollVideo.readyState >= 2 &&
-      Math.abs(scrollVideo.currentTime - targetTime) < 0.5 / videoFPS) {
-    requestedVideoFrame = -1;
-    clearTimeout(videoSeekTimer);
-    videoSeekTimer = null;
-    return;
-  }
-  if (pending && !timedOut) {
-    scheduleVideoSeek();
-    return;
-  }
-  try {
-    scrollVideo.currentTime = targetTime;
-    requestedVideoFrame = wantedVideoFrame;
-    videoSeekStarted = now;
-  } catch {
-    // Metadata can disappear during a source reload; retry after it returns.
-    requestedVideoFrame = -1;
-  }
-  scheduleVideoSeek();
-}
-
-function updateVideoTarget() {
-  wantedVideoFrame = Math.round((reducedMotion ? 0 : targetProgress) * lastVideoFrame);
-  seekLatestVideoFrame();
-}
 
 if (scrollVideo) {
   scrollVideo.loop = false;
   scrollVideo.autoplay = false;
   scrollVideo.pause();
   const prepareScrollVideo = () => {
-    if (!Number.isFinite(scrollVideo.duration) || scrollVideo.duration <= 0) return;
-    videoDuration = scrollVideo.duration;
-    lastVideoFrame = Math.max(0, Math.round(videoDuration * videoFPS) - 1);
-    requestedVideoFrame = -1;
-    updateVideoTarget();
+    videoDuration = Math.max(0, scrollVideo.duration - 0.04);
+    scrollVideo.currentTime = reducedMotion
+      ? 0
+      : targetProgress * videoDuration;
   };
-  scrollVideo.addEventListener("loadedmetadata", prepareScrollVideo);
-  scrollVideo.addEventListener("loadeddata", updateVideoTarget);
-  scrollVideo.addEventListener("canplay", updateVideoTarget);
-  // A completed seek releases the queue; always follow the newest scroll target.
-  scrollVideo.addEventListener("seeked", () => {
-    requestedVideoFrame = -1;
-    seekLatestVideoFrame();
-  });
-  document.addEventListener("visibilitychange", updateVideoTarget);
-  window.addEventListener("pageshow", updateVideoTarget);
+  if (scrollVideo.readyState >= 1) {
+    prepareScrollVideo();
+  } else {
+    scrollVideo.addEventListener("loadedmetadata", prepareScrollVideo, {
+      once: true,
+    });
+  }
   scrollVideo.addEventListener("play", () => scrollVideo.pause());
-  if (scrollVideo.readyState >= 1) prepareScrollVideo();
-}
-
-function scheduleScrollRender() {
-  if (rafPending) return;
-  rafPending = true;
-  requestAnimationFrame(renderScroll);
-}
-
-function requestScrollUpdate() {
-  scrollDirty = true;
-  scheduleScrollRender();
 }
 
 function measureScroll() {
@@ -196,7 +111,10 @@ function measureScroll() {
     const localProgress = clamp((window.innerHeight - sectionRect.top) / travel);
     section.style.setProperty("--local-progress", localProgress.toFixed(4));
   });
-  updateVideoTarget();
+  if (!rafPending) {
+    rafPending = true;
+    requestAnimationFrame(renderScroll);
+  }
 }
 
 if (!reducedMotion && finePointer) {
@@ -209,16 +127,8 @@ if (!reducedMotion && finePointer) {
   });
 }
 
-function renderScroll(timestamp) {
-  if (scrollDirty) {
-    scrollDirty = false;
-    measureScroll();
-  }
-  const elapsed = previousRenderTime === null ? 1000 / 60 : Math.min(64, timestamp - previousRenderTime);
-  previousRenderTime = timestamp;
-  // Time-based easing behaves the same on 60 Hz and 120 Hz displays.
-  smoothProgress += (targetProgress - smoothProgress) * (1 - Math.exp(-elapsed / 55));
-  if (Math.abs(targetProgress - smoothProgress) <= 0.0001) smoothProgress = targetProgress;
+function renderScroll() {
+  smoothProgress += (targetProgress - smoothProgress) * 0.12;
   const entrance = clamp(smoothProgress / 0.2);
   const browserEntrance = clamp((smoothProgress - 0.24) / 0.34);
   const journey = clamp((smoothProgress - 0.58) / 0.37);
@@ -226,7 +136,14 @@ function renderScroll(timestamp) {
 
   root.style.setProperty("--story-progress", entrance.toFixed(4));
   root.style.setProperty("--browser-progress", browserEntrance.toFixed(4));
-  root.style.setProperty("--feed-offset", `${(-journey * 75).toFixed(6)}%`);
+  root.style.setProperty("--feed-offset", `${(-journey * 75).toFixed(3)}%`);
+
+  if (scrollVideo && videoDuration && scrollVideo.readyState >= 2) {
+    const requestedTime = smoothProgress * videoDuration;
+    if (Math.abs(scrollVideo.currentTime - requestedTime) > 0.025) {
+      scrollVideo.currentTime = requestedTime;
+    }
+  }
 
   if (scene !== activeScene) {
     activeScene = scene;
@@ -240,19 +157,18 @@ function renderScroll(timestamp) {
     });
   }
 
-  rafPending = false;
-  if (smoothProgress !== targetProgress || scrollDirty) {
-    scheduleScrollRender();
+  if (Math.abs(targetProgress - smoothProgress) > 0.0005) {
+    requestAnimationFrame(renderScroll);
   } else {
-    previousRenderTime = null;
+    smoothProgress = targetProgress;
+    rafPending = false;
   }
 }
 
 if (!reducedMotion) {
-  window.addEventListener("scroll", requestScrollUpdate, { passive: true });
-  window.addEventListener("resize", requestScrollUpdate, { passive: true });
-  window.addEventListener("pageshow", requestScrollUpdate);
-  requestScrollUpdate();
+  window.addEventListener("scroll", measureScroll, { passive: true });
+  window.addEventListener("resize", measureScroll, { passive: true });
+  measureScroll();
 }
 
 if (!reducedMotion && finePointer) {
