@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "yobro-site",
+  "compatibility_date": "2026-09-11",
+  "workers_dev": true,
+  "preview_urls": true,
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  },
+  "routes": [
+    { "pattern": "yobro.lol/*", "zone_name": "yobro.lol" },
+    { "pattern": "www.yobro.lol/*", "zone_name": "yobro.lol" },
+    { "pattern": "yobro.aimoxyz.xyz/*", "zone_name": "aimoxyz.xyz" }
+  ]
+}
